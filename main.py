@@ -114,7 +114,7 @@ fala.save("saida.mp3")
 # Reproduza o áudio (você pode precisar de um player de áudio)
 os.system("mpg321 saida.mp3")  # Use mpg321 ou outro player de áudio de sua escolha
 
-
+#testando
 #Contador de piadas
 #Personalidade do chatbot
 #Citações Motivadoras para quando o usuario escrever ou falar que está triste por exemplo
