@@ -2,16 +2,30 @@
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 from chatterbot.trainers import ChatterBotCorpusTrainer
+from sqlalchemy import create_engine, inspect
+import random
+import os
+
+
 
 #Inserindo um Noma para o Bot
 bot = ChatBot('Zollck')
 
-#Aqui é onde será criado o repositorio do banco de dados para ser salvos as interações
+# Crie uma instância da engine SQLite para armazenar os dados do ChatBot
+database_uri = 'sqlite:///database.sqlite3'  # Seu banco de dados SQLite
+engine = create_engine(database_uri)
+
+# Crie uma instância do ChatBot e configure o armazenamento do banco de dados
 bot = ChatBot(
     'Zollck',
     storage_adapter='chatterbot.storage.SQLStorageAdapter',
-    database_uri='sqlite:///database.sqlite3'
+    database_uri=database_uri
 )
+
+
+# Para verificar se a tabela existe
+inspector = inspect(engine)  # Agora o 'inspect' está definido corretamente
+
 
 #Aqui é feito a logica de adaptação para ele escolher o melhor match com as interações do usuário
 bot = ChatBot(
@@ -43,7 +57,7 @@ conversa.train([
     'Qual a capital da Islândia?', 
     'Reikjavik, lá é muito bonito.',
     'Qual o seu personagem favorito?', 
-    'Gandalf, o mago.',
+    'Naruto, sem dúvidas.',
     'Qual a sua bebida favorita?', 
     'Eu bebo café, o motor de todos os programas de computador.',
     'Qual o seu gênero?', 
@@ -80,45 +94,68 @@ conversa.train([
     'Eu não assisto filmes, mas ouvi falar que "Duna" é ótimo.'
     'Não, não tenho tempo para assistir filmes.'
     'O que você acha de música pop?'
-    'Música pop é muito popular, muitas pessoas gostam.'
-    'Música pop pode ser divertida de vez em quando.'
+    'Não gosto muito, sou do rock.'
+    'rock é vida.'
     'Você tem algum hobby?'
     'Eu não tenho hobbies, mas adoro ajudar as pessoas.'
     'Meu único objetivo é conversar e aprender com você.'
     'Qual é o seu esporte favorito?'
-    'Eu não pratico esportes, mas muitas pessoas gostam de futebol.'
+    'Skate e Basquete.'
     'Esportes são ótimos para se manter saudável.'
     ])
 
+
+
+#Contador de Piadas
+listas = [
+        "Piada: Por que o esqueleto não brigou com ninguém? Porque ele não tinha estômago para isso!",
+        "Piada: Sabe por que o livro de matemática ficou triste? Porque tinha demasiados problemas.",
+        "Piada: O que o zero disse para o oito? 'Que cinto maneiro você tem!'.",
+        "Piada: O que aconteceu com o homem que comeu o relógio? Ele teve um tempo difícil.",
+        "Piada: Por que o espantalho ganhou um prêmio? Porque ele era um cara muito legal.",
+        "Piada: O que a mãe pimenta disse para o filho pimentão? 'Filho, você está muito apimentado hoje!'",
+        "Piada: O que o celular disse para o carregador? 'Você me completa!'",
+        "Piada: Por que o peixe não usa computador? Porque ele tem medo do mouse.",
+        "Piada: Por que o sapo estacionou o carro no meio da estrada? Porque ele queria pegar moscas no farol!",
+        "Piada: O que o tomate disse para o ketchup? 'C'mon, catch up!'"
+    ]
+
+def Piada():
+    escolha = random.choice(listas)
+    print("Piada: " + escolha)
+    print("")
+    print("Gostaria de outra super piadoca?")
+    resposta = input()
+    if resposta == "sim":
+        Piada()
+
+# Execução do Loop de entrada e saida
 while True:
     try:
-        resposta = bot.get_response(input("Usuário: "))
-        if float(resposta.confidence) > 0.2:
-            print("Zollck: ", resposta)
+        pergunta = input("Usuário: ").lower()  # Obtenha a entrada do usuário e converta para minúsculas
+        if "me conte uma piada" in pergunta:  # Verifique se a frase está contida na pergunta do usuário
+            Piada()
         else:
-            print("Não compreendi o que você quis dizer :(")
-    except(KeyboardInterrupt, EOFError, SystemExit):
+            resposta = bot.get_response(pergunta)  # Obtenha uma resposta do bot
+            if float(resposta.confidence) > 0.2:
+                print("Zollck: ", resposta)
+            else:
+                print("Não compreendi o que você quis dizer :(")
+    except (KeyboardInterrupt, EOFError, SystemExit): # Excessões de Erros
         break
 
-
 #Este algoritmo é para implementar a voz no meu chatbot
-
-#from gtts import gTTS
-import os
-# Texto que você deseja converter em fala
+"""
 texto = "Olá, como posso ajudar você?"
-# Crie um objeto gTTS
 fala = gTTS(text=texto, lang='pt')
-# Salve o arquivo de áudio
 fala.save("saida.mp3")
-# Reproduza o áudio (você pode precisar de um player de áudio)
 os.system("mpg321 saida.mp3")  # Use mpg321 ou outro player de áudio de sua escolha
+"""
 
-#testando
-#Contador de piadas
+
 #Personalidade do chatbot
 #Citações Motivadoras para quando o usuario escrever ou falar que está triste por exemplo
 #api de previsao de tempo
 #api de musicas
 #conectar com dispositivos inteligentes
-#teste
+#adicionar .lower nas respostas
