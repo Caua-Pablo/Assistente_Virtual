@@ -5,6 +5,8 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 from sqlalchemy import create_engine, inspect
 import random
 import os
+import time
+
 
 
 
@@ -104,6 +106,19 @@ conversa.train([
     'Esportes são ótimos para se manter saudável.'
     ])
 
+#Previsão do Tempo
+import requests
+def Clima():
+    API_KEY = "bf31f8a4512b21cd120d7ea783803b92"
+    cidade = "Goiânia"
+    link = f"https://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={API_KEY}&lang=pt_br"
+
+    requisicao = requests.get(link)
+    requisicao_dic = requisicao.json()
+    descricao = requisicao_dic['weather'][0]['description']
+    temperatura = requisicao_dic['main']['temp'] - 273.15
+    print(descricao, f"A Temperatura Atual é de {temperatura}ºC")
+
 
 
 #Contador de Piadas
@@ -122,7 +137,8 @@ listas = [
 
 def Piada():
     escolha = random.choice(listas)
-    print("Piada: " + escolha)
+    print("Hummm, deixe me pensar em uma boa piada")
+    print("Que tal essa: "+escolha)
     print("")
     print("Gostaria de outra super piadoca?")
     resposta = input()
@@ -135,6 +151,9 @@ while True:
         pergunta = input("Usuário: ").lower()  # Obtenha a entrada do usuário e converta para minúsculas
         if "me conte uma piada" in pergunta:  # Verifique se a frase está contida na pergunta do usuário
             Piada()
+        
+        if "qual a previsão do tempo" in pergunta:  # Verifique se a frase está contida na pergunta do usuário
+            Clima()
         else:
             resposta = bot.get_response(pergunta)  # Obtenha uma resposta do bot
             if float(resposta.confidence) > 0.2:
@@ -159,3 +178,21 @@ os.system("mpg321 saida.mp3")  # Use mpg321 ou outro player de áudio de sua esc
 #api de musicas
 #conectar com dispositivos inteligentes
 #adicionar .lower nas respostas
+#Data de Hoje quando o usuario perguntar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
