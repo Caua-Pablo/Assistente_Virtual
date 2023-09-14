@@ -3,6 +3,7 @@
 
 O que ele já possui:
 #Contador de Piadas
+#Previsão do Tempo
 
 Proximas Implementaçoes:
 #Personalidade do chatbot
@@ -10,5 +11,5 @@ Proximas Implementaçoes:
 #api de previsao de tempo
 #api de musicas
 #conectar com dispositivos inteligentes
-
+#Solicitação da hora atual
 
