@@ -5,8 +5,7 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 from sqlalchemy import create_engine, inspect
 import random
 import os
-import time
-
+import time 
 
 
 
@@ -80,7 +79,7 @@ conversa.train([
     'Como você está hoje?'
     'Estou bem, obrigado por perguntar. E você?'
     'Estou sempre pronto para conversar!'
-    'Qual é o clima hoje?'
+    'Qual é a previsão do tempo'
     'Desculpe, eu não tenho acesso a informações de clima.'
     'Eu não sei, mas posso procurar para você.'
     'Você viu as notícias de hoje?'
@@ -105,6 +104,7 @@ conversa.train([
     'Skate e Basquete.'
     'Esportes são ótimos para se manter saudável.'
     ])
+
 
 #Previsão do Tempo
 import requests
@@ -134,22 +134,24 @@ listas = [
         "Piada: Por que o sapo estacionou o carro no meio da estrada? Porque ele queria pegar moscas no farol!",
         "Piada: O que o tomate disse para o ketchup? 'C'mon, catch up!'"
     ]
-
 def Piada():
     escolha = random.choice(listas)
+    print("")
     print("Hummm, deixe me pensar em uma boa piada")
-    print("Que tal essa: "+escolha)
+    print("Que tal essa "+escolha)
     print("")
     print("Gostaria de outra super piadoca?")
     resposta = input()
-    if resposta == "sim":
+    if resposta.lower() == "sim":
         Piada()
+    if resposta.lower() == "não" or "nao":
+        print("Tudo bem então...")
 
 # Execução do Loop de entrada e saida
 while True:
     try:
         pergunta = input("Usuário: ").lower()  # Obtenha a entrada do usuário e converta para minúsculas
-        if "me conte uma piada" in pergunta:  # Verifique se a frase está contida na pergunta do usuário
+        if "me conte uma piada" or "me faça rir" or "qual a piada do dia" or "qual a piada de hoje" or "gostaria de uma piada" in pergunta:
             Piada()
         
         if "qual a previsão do tempo" in pergunta:  # Verifique se a frase está contida na pergunta do usuário
@@ -163,6 +165,20 @@ while True:
     except (KeyboardInterrupt, EOFError, SystemExit): # Excessões de Erros
         break
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #Este algoritmo é para implementar a voz no meu chatbot
 """
 texto = "Olá, como posso ajudar você?"
@@ -170,15 +186,14 @@ fala = gTTS(text=texto, lang='pt')
 fala.save("saida.mp3")
 os.system("mpg321 saida.mp3")  # Use mpg321 ou outro player de áudio de sua escolha
 """
-
-
 #Personalidade do chatbot
 #Citações Motivadoras para quando o usuario escrever ou falar que está triste por exemplo
-#api de previsao de tempo
 #api de musicas
 #conectar com dispositivos inteligentes
 #adicionar .lower nas respostas
 #Data de Hoje quando o usuario perguntar
+#Interface Gráfica com Tkinter
+#Parte Web com Django
 
 
 
